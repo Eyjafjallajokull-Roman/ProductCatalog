@@ -67,7 +67,8 @@ http://localhost:8080
 
 - Use the `/api/users/register` and `/api/users/login` endpoints to create and login users.
 - The login endpoint returns a JWT token.
-- Include this token in `Authorization: Bearer <your_token>` for all protected endpoints.
+- Include this token in `Authorization: Bearer <your_token>` for all protected endpoints. 
+- (It should be auto-filled in Postman after login.)
 
 ---
 
