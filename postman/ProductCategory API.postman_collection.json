@@ -1,0 +1,479 @@
+{
+	"info": {
+		"_postman_id": "cff08dee-13a2-4b57-9395-93c5105bc076",
+		"name": "ProductCategory API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25948709"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"testpass\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"pm.environment.set(\"jwt_token\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"testpass\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get All Products",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/products?page=0&size=10&sort=id,asc&currencies=EUR,USD",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "id,asc"
+								},
+								{
+									"key": "currencies",
+									"value": "EUR,USD"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/products/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Category tree",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.response.to.have.status(200);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/categories/1/parents",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"1",
+								"parents"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"New Product\",\n  \"description\": \"Created via Postman\",\n  \"price\": 49.99,\n  \"currency\": \"USD\",\n  \"categoryId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated Product\",\n  \"description\": \"Updated via Postman\",\n  \"price\": 79.99,\n  \"currency\": \"USD\",\n  \"categoryId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/products/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product - Invalid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.response.to.have.status(400);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/products/9999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"9999"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Get All Categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/categories?page=0&size=10&sort=id,asc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "id,asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Category by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/categories/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"New Category1\",\n  \"parentId\": null\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"New Category123\",\n  \"parentId\": null\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/categories/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/categories/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "jwt_token",
+			"value": ""
+		}
+	]
+}
